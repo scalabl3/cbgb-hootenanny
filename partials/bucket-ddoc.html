@@ -1,0 +1,113 @@
+<div ng-controller="BucketDDocCtrl">
+  <div ng-show="err" class="alert alert-error">
+    <i class="icon-flag"></i> {{err}}
+  </div>
+
+  <ul class="breadcrumb">
+    <li>
+      <a href="#/server">
+        <i class="icon-home"></i> server
+      </a>
+      <span class="divider">/</span>
+    </li>
+    <li>
+      <a href="#/buckets">
+        <i class="icon-book"></i> buckets
+      </a>
+      <span class="divider">/</span>
+    </li>
+    <li>
+      <a href="#/buckets/{{bucketName}}">
+        <i class="icon-folder-open"></i> {{bucketName}}
+      </a>
+      <span class="divider">/</span>
+    </li>
+    <li>
+      <a href="#/buckets/{{bucketName}}/ddocs">
+        <i class="icon-tags"></i> design docs
+      </a>
+      <span class="divider">/</span>
+    </li>
+    <li class="active"><i class="icon-tag"></i> {{ddocNameSuffix}}</li>
+  </ul>
+
+  <div class="row main">
+    <div class="span8">
+      <legend>Design doc: {{ddocNameSuffix}}</legend>
+      <button type="submit" class="btn" ng-click="ddocSave()">
+        Save Design Doc
+      </button>
+      <span ng-show="ddocSaveResult">{{ddocSaveResult}}</span>
+      <br/>
+      <br/>
+      <ul>
+        <li ng-repeat="(viewName, view) in ddoc.views">
+          <legend>
+              view: {{viewName}} <a class="view-link" href="http://{{ viewUrlHost }}:{{ viewUrlPort }}/{{ bucketName }}/_design/{{ ddocNameSuffix }}/_view/{{ viewName }}?include_docs=false">View Results</a>
+              <a class="btn btn-mini" href="#viewQueryParams" data-toggle="modal"><i class="icon-edit"></i></a>
+          </legend>
+          <div>
+            <label>map:
+              <textarea id="{{bucketName}}/{{ddocName}}/{{viewName}}-map"
+              class="view viewMap">{{view.map}}</textarea>
+            </label>
+          </div>
+          <div>
+            <label>reduce:
+              <textarea id="{{bucketName}}/{{ddocName}}/{{viewName}}-reduce"
+              class="view viewReduce">{{view.reduce}}</textarea>
+            </label>
+          </div>
+        </li>
+      </ul>
+      <br/>
+      <button type="submit" class="btn" ng-click="ddocSave()">
+        Save Design Doc
+      </button>
+      <span ng-show="ddocSaveResult">{{ddocSaveResult}}</span>
+    </div>
+    <div class="span4">
+      <form name="ddocCreateForm">
+        <legend>Manage</legend>
+        <label>View name<br/>
+          <input type="text"
+                name="viewName"
+                required
+                placeholder="your-view-name"
+                ng-model="viewName"/>
+        </label>
+        <button type="submit" class="btn" ng-click="viewCreate()">
+          Add View
+        </button>
+      </form>
+      <div ng-show="viewCreateResult">
+        {{viewCreateResult}}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="viewQueryParams" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Ã—</button>
+        <h3 id="myModalLabel">Customize View Query</h3>
+    </div>
+    <div class="modal-body">
+        <table>
+            <tr>
+                <td>Include Docs?</td>
+                <td><input type="checkbox" /></td>
+            </tr>
+            <tr>
+                <td>start_key</td>
+                <td><input type="text" /></td>
+            </tr>
+        </table>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary">Save changes</button>
+    </div>
+</div>
